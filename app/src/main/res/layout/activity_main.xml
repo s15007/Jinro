@@ -47,4 +47,13 @@
         android:layout_alignTop="@+id/btn_find_village"
         android:layout_centerHorizontal="true"
         android:id="@+id/btn_make_village" />
+
+    <Button
+        android:text="ゲーム画面"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/btn_make_village"
+        android:layout_marginBottom="12dp"
+        android:id="@+id/btn_game_window" />
 </RelativeLayout>

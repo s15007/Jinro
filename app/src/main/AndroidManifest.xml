@@ -27,6 +27,13 @@
             android:name=".GoIntoVillage"
             android:label="@string/go_into_village" >
         </activity>
+        <activity
+            android:name=".ChatActivity"
+            android:label="チャット">
+        </activity>
+        <activity
+            android:name=".GameWindow">
+        </activity>
     </application>
 
 </manifest>
