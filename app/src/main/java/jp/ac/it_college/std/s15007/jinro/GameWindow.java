@@ -2,6 +2,7 @@ package jp.ac.it_college.std.s15007.jinro;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.TabHost;
 import android.widget.TabHost.TabSpec;
 import android.widget.TextView;
@@ -11,7 +12,9 @@ import android.widget.TextView;
  */
 
 public class GameWindow extends Activity {
-    public int time = 300;
+
+    private Handler mHandler = new Handler();
+    private Runnable updateText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +36,23 @@ public class GameWindow extends Activity {
 
         tabhost.setCurrentTab(0);
 
-        TextView setTime = (TextView) findViewById(R.id.time);
 
+
+        updateText = new Runnable() {
+            @Override
+            public void run() {
+                TextView setTime = (TextView) findViewById(R.id.time);
+                Integer count = Integer.valueOf(setTime.getText().toString());
+                count -= 1;
+                setTime.setText(count.toString());
+                mHandler.removeCallbacks(updateText);
+                if (count > 0) {
+                    mHandler.postDelayed(updateText, 1000);
+                } else {
+                    finish();
+                }
+            }
+        };
+        mHandler.postDelayed(updateText, 1000);
     }
 }
