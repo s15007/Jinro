@@ -2,13 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="jp.ac.it_college.std.s15007.jinro">
 
+    <!--<uses-feature android:name="android.hardware.wifi.direct" />-->
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="portrait">
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,22 +22,27 @@
         </activity>
         <activity
             android:name=".FindVillage"
-            android:label="@string/find_village" >
+            android:label="@string/find_village"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".MakeVillage"
-            android:label="@string/make_village" >
+            android:label="@string/make_village"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".GoIntoVillage"
-            android:label="@string/go_into_village" >
+            android:label="@string/go_into_village"
+            android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ChatActivity"
-            android:label="チャット">
+            android:label="チャット"
+            android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".GameWindow">
+            android:name=".GameWindow"
+            android:screenOrientation="portrait">
         </activity>
     </application>
 

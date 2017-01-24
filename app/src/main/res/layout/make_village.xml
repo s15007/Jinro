@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText"
+        android:id="@+id/player_name"
         android:background="@color/white"
         android:layout_below="@+id/textView"
         android:layout_alignStart="@+id/textView"
@@ -22,8 +22,8 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:id="@+id/textView2"
-        android:layout_below="@+id/editText"
-        android:layout_alignStart="@+id/editText2"
+        android:layout_below="@+id/player_name"
+        android:layout_alignStart="@+id/village_name"
         android:layout_marginTop="34dp" />
 
     <EditText
@@ -32,10 +32,10 @@
         android:inputType="textPersonName"
         android:ems="10"
         android:layout_marginTop="29dp"
-        android:id="@+id/editText2"
+        android:id="@+id/village_name"
         android:background="@color/white"
         android:layout_alignTop="@+id/textView2"
-        android:layout_alignStart="@+id/editText"
+        android:layout_alignStart="@+id/player_name"
         android:hint="村名を入力" />
 
     <Button
@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_back"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/village_name"
         android:layout_toEndOf="@+id/textView2"
         android:layout_marginTop="43dp" />
 
