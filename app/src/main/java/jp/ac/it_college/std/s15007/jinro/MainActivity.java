@@ -15,7 +15,6 @@ public class MainActivity extends AppCompatActivity {
 
         Button findVillage = (Button) findViewById(R.id.btn_find_village);
         Button makeVillage = (Button) findViewById(R.id.btn_make_village);
-        Button goToVillage = (Button) findViewById(R.id.btn_go_into_village);
         Button gameWindow = (Button) findViewById(R.id.btn_game_window);
 
         findVillage.setOnClickListener(new View.OnClickListener() {
@@ -31,14 +30,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplication(), MakeVillage.class);
-                startActivity(intent);
-            }
-        });
-
-        goToVillage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplication(), GoIntoVillage.class);
                 startActivity(intent);
             }
         });

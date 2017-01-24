@@ -31,11 +31,6 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".GoIntoVillage"
-            android:label="@string/go_into_village"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".ChatActivity"
             android:label="チャット"
             android:screenOrientation="portrait">
