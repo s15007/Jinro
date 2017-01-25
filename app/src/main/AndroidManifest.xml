@@ -22,21 +22,26 @@
         </activity>
         <activity
             android:name=".FindVillage"
-            android:label="@string/find_village"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".MakeVillage"
-            android:label="@string/make_village"
             android:screenOrientation="portrait">
         </activity>
         <activity
             android:name=".ChatActivity"
-            android:label="チャット"
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".GameWindow"
+            android:name=".GameWindowDay"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".GameWindowNight"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".GameWindowExecution"
             android:screenOrientation="portrait">
         </activity>
     </application>

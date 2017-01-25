@@ -24,13 +24,17 @@ public class JinroDBHelper extends SQLiteOpenHelper {
         public static final String _ID = "id";
         public static final String VILLAGE_NAME = "village_name";
         public static final String PLAYER_NAME = "player_name";
+        public static final String CHAT = "chat";
+        public static final String MEMBER_ID = "member_id";
     }
 
     private static final String CREATE_TABLE_VILLAGE = "CREATE TABLE " +
             TABLE_NAME_VILLAGE + " ( " +
             ColumnsVillage._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ColumnsVillage.VILLAGE_NAME + " TEXT, " +
-            ColumnsVillage.PLAYER_NAME + " TEXT)";
+            ColumnsVillage.CHAT + " TEXT, " +
+            ColumnsVillage.MEMBER_ID + " INTEGER, " +
+            ColumnsVillage.PLAYER_NAME + " TEXT);";
 
 
 
@@ -39,6 +43,7 @@ public class JinroDBHelper extends SQLiteOpenHelper {
     public interface ColumnsUsers extends BaseColumns {
         public static final String _ID = "id";
         public static final String NAME = "name";
+        public static final String JOB = "job";
         public static final String CHAT = "chat";
         public static final String DATA_MODIFIED = "date_modified";
     }
@@ -47,15 +52,18 @@ public class JinroDBHelper extends SQLiteOpenHelper {
             TABLE_NAME_USERS + " ( " +
             ColumnsUsers._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ColumnsUsers.NAME + " TEXT, " +
-            ColumnsUsers.CHAT + " TEXT, " +
-            ColumnsUsers.DATA_MODIFIED + " INTEGER NOT NULL)";
+            ColumnsUsers.DATA_MODIFIED + " INTEGER NOT NULL);";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        db.execSQL(CREATE_TABLE_VILLAGE);
-//        db.execSQL(CREATE_TABLE_USERS);
-        db.execSQL("create table village(" + "   village_name text not null,"
-                + "   player_name text" + ");");
+        db.execSQL(CREATE_TABLE_VILLAGE);
+        db.execSQL(CREATE_TABLE_USERS);
+//        db.execSQL("create table " + TABLE_NAME_VILLAGE + " (" +
+//                ColumnsVillage._ID + " integer primary key autoincrement, " +
+//                ColumnsVillage.VILLAGE_NAME + " text not null, " +
+//                ColumnsVillage.PLAYER_NAME + " text, " +
+//                ColumnsVillage.CHAT + " text, " +
+//                ColumnsVillage.MEMBER_ID + " integer);");
     }
 
     @Override

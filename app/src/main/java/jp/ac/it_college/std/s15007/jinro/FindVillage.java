@@ -45,67 +45,6 @@ public class FindVillage extends Activity {
         });
     }
 
-//    private void show_village() {
-//        JinroDBHelper myDb = new JinroDBHelper(this);
-//        SQLiteDatabase db = myDb.getReadableDatabase();
-//
-//        Cursor cursor = db.query("village", new String[] { "village_name", "player_name" },
-//                null, null, null, null, null);
-//        boolean isEof = cursor.moveToFirst();
-//
-//        ArrayList<String> items = new ArrayList<>();
-//        final ArrayList<String> village_name_list = new ArrayList<>();
-//        ArrayList<String> player_name_list = new ArrayList<>();
-//
-//        while (isEof) {
-//            String village_data = String.format("%s       %s", cursor.getString(0), cursor.getString(1));
-//            String v_name_data = cursor.getString(0);
-//            String p_name_data = cursor.getString(1);
-//            village_name_list.add(v_name_data);
-//            player_name_list.add(p_name_data);
-//            items.add(village_data);
-//            isEof = cursor.moveToNext();
-//        }
-//
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-//                this,
-//                R.layout.village_list_item,
-//                items
-//        );
-//
-//        ListView myListView = (ListView) findViewById(R.id.village_list);
-//        myListView.setEmptyView(findViewById(R.id.empty_village_list));
-//        myListView.setAdapter(adapter);
-//
-//        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
-//
-//                ListView listView = (ListView)parent;
-//                String item = (String)listView.getItemAtPosition(pos);
-//
-//                AlertDialog.Builder alertDlg = new AlertDialog.Builder(FindVillage.this);
-//                alertDlg.setMessage(village_name_list.get(pos) + " に入りますか？");
-//                alertDlg.setNegativeButton("キャンセル", null);
-//                alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
-//                    public void onClick(DialogInterface dialog, int which) {
-//                        StartActivity();
-//                    }
-//                });
-//
-//                // 表示
-//                alertDlg.create().show();
-//            }
-//        });
-//
-//        db.close();
-//    }
-
-    private void StartActivity() {
-        Intent intent = new Intent(this, GameWindow.class);
-        startActivity(intent);
-    }
-
     public class Village {
         private Bitmap icon;
         private String village;
@@ -136,12 +75,13 @@ public class FindVillage extends Activity {
         }
     }
 
-
     private void show_village() {
         JinroDBHelper myDb = new JinroDBHelper(this);
         SQLiteDatabase db = myDb.getReadableDatabase();
 
-        Cursor cursor = db.query("village", new String[] { "village_name", "player_name" },
+        Cursor cursor = db.query(JinroDBHelper.TABLE_NAME_VILLAGE, new String[] {
+                JinroDBHelper.ColumnsVillage.VILLAGE_NAME,
+                JinroDBHelper.ColumnsVillage.PLAYER_NAME },
                 null, null, null, null, null);
 
         boolean isEof = cursor.moveToFirst();
@@ -233,4 +173,65 @@ public class FindVillage extends Activity {
             return convertView;
         }
     }
+
+    private void StartActivity() {
+        Intent intent = new Intent(this, GameWindowNight.class);
+        startActivity(intent);
+    }
+
+    //    private void show_village() {
+//        JinroDBHelper myDb = new JinroDBHelper(this);
+//        SQLiteDatabase db = myDb.getReadableDatabase();
+//
+//        Cursor cursor = db.query("village", new String[] { "village_name", "player_name" },
+//                null, null, null, null, null);
+//        boolean isEof = cursor.moveToFirst();
+//
+//        ArrayList<String> items = new ArrayList<>();
+//        final ArrayList<String> village_name_list = new ArrayList<>();
+//        ArrayList<String> player_name_list = new ArrayList<>();
+//
+//        while (isEof) {
+//            String village_data = String.format("%s       %s", cursor.getString(0), cursor.getString(1));
+//            String v_name_data = cursor.getString(0);
+//            String p_name_data = cursor.getString(1);
+//            village_name_list.add(v_name_data);
+//            player_name_list.add(p_name_data);
+//            items.add(village_data);
+//            isEof = cursor.moveToNext();
+//        }
+//
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+//                this,
+//                R.layout.village_list_item,
+//                items
+//        );
+//
+//        ListView myListView = (ListView) findViewById(R.id.village_list);
+//        myListView.setEmptyView(findViewById(R.id.empty_village_list));
+//        myListView.setAdapter(adapter);
+//
+//        myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
+//
+//                ListView listView = (ListView)parent;
+//                String item = (String)listView.getItemAtPosition(pos);
+//
+//                AlertDialog.Builder alertDlg = new AlertDialog.Builder(FindVillage.this);
+//                alertDlg.setMessage(village_name_list.get(pos) + " に入りますか？");
+//                alertDlg.setNegativeButton("キャンセル", null);
+//                alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+//                    public void onClick(DialogInterface dialog, int which) {
+//                        StartActivity();
+//                    }
+//                });
+//
+//                // 表示
+//                alertDlg.create().show();
+//            }
+//        });
+//
+//        db.close();
+//    }
 }
