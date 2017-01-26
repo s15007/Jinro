@@ -58,12 +58,6 @@ public class JinroDBHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_VILLAGE);
         db.execSQL(CREATE_TABLE_USERS);
-//        db.execSQL("create table " + TABLE_NAME_VILLAGE + " (" +
-//                ColumnsVillage._ID + " integer primary key autoincrement, " +
-//                ColumnsVillage.VILLAGE_NAME + " text not null, " +
-//                ColumnsVillage.PLAYER_NAME + " text, " +
-//                ColumnsVillage.CHAT + " text, " +
-//                ColumnsVillage.MEMBER_ID + " integer);");
     }
 
     @Override
