@@ -16,8 +16,8 @@ import android.widget.Toast;
 
 public class MakeVillage extends Activity {
 
-    private JinroDBHelper myDb;
     private DataStr data;
+    JinroDBHelper myDb;
 
 
     @Override
@@ -25,7 +25,6 @@ public class MakeVillage extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.make_village);
 
-        myDb = new JinroDBHelper(this);
         data = new DataStr();
 
         Button btn_back = (Button) findViewById(R.id.btn_back);
@@ -40,8 +39,6 @@ public class MakeVillage extends Activity {
         btn_make.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                SQLiteDatabase db = myDb.getWritableDatabase();
 
                 EditText pname_id = (EditText) findViewById(R.id.player_name);
                 EditText vname_id = (EditText) findViewById(R.id.village_name);
@@ -67,6 +64,7 @@ public class MakeVillage extends Activity {
     }
 
     private void insertData (DataStr villageData){
+        JinroDBHelper myDb = new JinroDBHelper(this);
         SQLiteDatabase db = myDb.getWritableDatabase();
 
         ContentValues values = new ContentValues();

@@ -29,10 +29,6 @@
             android:screenOrientation="portrait">
         </activity>
         <activity
-            android:name=".ChatActivity"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
             android:name=".GameWindowDay"
             android:screenOrientation="portrait">
         </activity>
@@ -42,6 +38,10 @@
         </activity>
         <activity
             android:name=".GameWindowExecution"
+            android:screenOrientation="portrait">
+        </activity>
+        <activity
+            android:name=".InVillage"
             android:screenOrientation="portrait">
         </activity>
     </application>
