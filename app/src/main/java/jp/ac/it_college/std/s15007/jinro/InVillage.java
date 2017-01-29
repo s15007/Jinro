@@ -20,7 +20,11 @@ import java.util.ArrayList;
 
 public class InVillage extends Activity{
 
+    private String player_name;
+    private String player_job;
+    private String village_name;
     private int village_id;
+    private int player_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,8 +34,9 @@ public class InVillage extends Activity{
         Intent intent = getIntent();
 
         String author_name = intent.getStringExtra("author_name");
-        String village_name = intent.getStringExtra("village_name");
-        String player_name = intent.getStringExtra("player_name");
+        player_name = intent.getStringExtra("player_name");
+        player_job = intent.getStringExtra("player_job");
+        village_name = intent.getStringExtra("village_name");
         village_id = intent.getIntExtra("village_id", 0);
 
         TextView player = (TextView) findViewById(R.id.txt_player_name);
@@ -83,9 +88,13 @@ public class InVillage extends Activity{
     }
 
     private void startGame() {
-        Intent intent = new Intent(this, GameWindowNight.class);
+        Intent intent = new Intent(this, GameWindowDay.class);
 
         intent.putExtra("village_id", village_id);
+        intent.putExtra("village_name", village_name);
+        intent.putExtra("player_name", player_name);
+        intent.putExtra("player_job", player_job);
+        intent.putExtra("player_id", player_id);
 
         startActivity(intent);
     }

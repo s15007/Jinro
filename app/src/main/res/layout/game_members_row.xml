@@ -3,6 +3,6 @@
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/dark_black"
-    android:textColor="@color/white">
+    android:background="@color/white"
+    android:textColor="@color/black">
 </TextView>

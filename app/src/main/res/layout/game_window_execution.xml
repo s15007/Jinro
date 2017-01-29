@@ -64,9 +64,9 @@
         android:text="[役職]"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView8"
-        android:layout_toEndOf="@+id/textView8"
-        android:id="@+id/textView13"
+        android:layout_alignBottom="@+id/pname"
+        android:layout_toEndOf="@+id/pname"
+        android:id="@+id/pjob"
         android:textSize="24sp"
         android:textColor="@color/black"/>
 
@@ -74,7 +74,7 @@
         android:text="プレイヤー名"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView8"
+        android:id="@+id/pname"
         android:textSize="24sp"
         android:textColor="@color/black"
         android:layout_alignBaseline="@+id/button"
@@ -111,7 +111,7 @@
         android:id="@+id/txt1"
         android:textSize="28sp"
         android:textColor="@color/red"
-        android:layout_alignTop="@+id/textView13"
+        android:layout_alignTop="@+id/pjob"
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

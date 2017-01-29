@@ -9,6 +9,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
@@ -37,6 +38,7 @@ public class FindVillage extends Activity {
     private int village_id;
 
     private JinroDBHelper myDb;
+    MediaPlayer mp = null;
     User user;
 
     @Override
@@ -50,7 +52,21 @@ public class FindVillage extends Activity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mp = MediaPlayer.create(FindVillage.this, R.raw.b_069);
+                mp.setVolume(0.8f, 0.8f);
+                mp.start();
                 finish();
+            }
+        });
+
+        Button btn_refresh = (Button) findViewById(R.id.btn_refresh);
+        btn_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mp = MediaPlayer.create(FindVillage.this, R.raw.b_069);
+                mp.setVolume(0.8f, 0.8f);
+                mp.start();
+                show_village();
             }
         });
     }
@@ -142,9 +158,19 @@ public class FindVillage extends Activity {
 
                 AlertDialog.Builder alertDlg = new AlertDialog.Builder(FindVillage.this);
                 alertDlg.setMessage(village_name_list.get(pos) + " に入りますか？");
-                alertDlg.setNegativeButton("キャンセル", null);
+                alertDlg.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mp = MediaPlayer.create(FindVillage.this, R.raw.b_069);
+                        mp.setVolume(0.8f, 0.8f);
+                        mp.start();
+                    }
+                });
                 alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        mp = MediaPlayer.create(FindVillage.this, R.raw.b_069);
+                        mp.setVolume(0.8f, 0.8f);
+                        mp.start();
                         StartActivity();
                     }
                 });
@@ -217,6 +243,7 @@ public class FindVillage extends Activity {
             intent.putExtra("village_name", v_name_data);
             intent.putExtra("author_name", v_author_data);
             intent.putExtra("player_name", user.name);
+            intent.putExtra("player_job", user.job);
 
             if (id < 0) {
                 Toast.makeText(FindVillage.this, "登録に失敗しました", Toast.LENGTH_LONG).show();
@@ -231,8 +258,8 @@ public class FindVillage extends Activity {
 
     public class User {
         private String name;
-        private int village_id;
         private String job;
+        private int village_id;
     }
 
     private String setName() {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ public class MakeVillage extends Activity {
 
     private DataStr data;
     JinroDBHelper myDb;
+    MediaPlayer mp = null;
 
 
     @Override
@@ -31,6 +33,9 @@ public class MakeVillage extends Activity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mp = MediaPlayer.create(MakeVillage.this, R.raw.b_069);
+                mp.setVolume(0.8f, 0.8f);
+                mp.start();
                 finish();
             }
         });
@@ -39,6 +44,10 @@ public class MakeVillage extends Activity {
         btn_make.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mp = MediaPlayer.create(MakeVillage.this, R.raw.b_069);
+                mp.setVolume(0.8f, 0.8f);
+                mp.start();
 
                 EditText pname_id = (EditText) findViewById(R.id.player_name);
                 EditText vname_id = (EditText) findViewById(R.id.village_name);

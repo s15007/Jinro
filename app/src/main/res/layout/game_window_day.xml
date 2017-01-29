@@ -60,8 +60,7 @@
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentEnd="true"
                             android:id="@+id/btn_comment"
-                            android:textSize="29sp"
-                            />
+                            android:textSize="29sp" />
 
                         <ListView
                             android:layout_width="match_parent"
@@ -80,11 +79,27 @@
                     android:id="@+id/tab2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:background="@color/white">
+
+                    <ListView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/list_players"
+                        android:divider="@color/black"
+                        android:dividerHeight="1px"/>
 
                 </LinearLayout>
 
             </FrameLayout>
+
+            <View
+                android:id="@+id/indicator"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:layout_gravity="bottom"
+                android:background="?android:attr/colorControlActivated" />
+
         </LinearLayout>
     </TabHost>
 
@@ -102,9 +117,9 @@
         android:text="@string/player_job"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView8"
-        android:layout_toEndOf="@+id/textView8"
-        android:id="@+id/textView13"
+        android:layout_alignBottom="@+id/pname"
+        android:layout_toEndOf="@+id/pname"
+        android:id="@+id/pjob"
         android:textSize="24sp"
         android:textColor="@color/black"/>
 
@@ -112,7 +127,7 @@
         android:text="@string/player_name_data"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textView8"
+        android:id="@+id/pname"
         android:textSize="24sp"
         android:textColor="@color/black"
         android:layout_alignBaseline="@+id/button"
@@ -149,6 +164,11 @@
         android:id="@+id/txt1"
         android:textSize="28sp"
         android:textColor="@color/colorPrimary"
-        android:layout_alignTop="@+id/textView13"
+        android:layout_alignTop="@+id/pjob"
         android:layout_centerHorizontal="true" />
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/pager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </RelativeLayout>

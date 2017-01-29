@@ -27,7 +27,6 @@ public class JinroDBHelper extends SQLiteOpenHelper {
         public static final String VILLAGE_NAME = "village_name";
         public static final String PLAYER_NAME = "player_name";
         public static final String CHAT = "chat";
-        public static final String MEMBER_ID = "member_id";
     }
 
     public interface ColumnsUsers extends BaseColumns {
@@ -40,7 +39,7 @@ public class JinroDBHelper extends SQLiteOpenHelper {
 
     public interface ColumnsPost extends BaseColumns {
         public static final String _ID = "id";
-        public static final String USER_ID = "user_id";
+        public static final String USER_NAME = "user_name";
         public static final String BODY = "body";
         public static final String VILLAGE_ID = "village_id";
         public static final String DATA_MODIFIED = "data_modified";
@@ -51,7 +50,6 @@ public class JinroDBHelper extends SQLiteOpenHelper {
             ColumnsVillage._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ColumnsVillage.VILLAGE_NAME + " TEXT, " +
             ColumnsVillage.CHAT + " TEXT, " +
-//            ColumnsVillage.MEMBER_ID + " INTEGER, " +
             ColumnsVillage.PLAYER_NAME + " TEXT);";
 
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " +
@@ -65,16 +63,16 @@ public class JinroDBHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_POST = "CREATE TABLE " +
             TABLE_NAME_POST + " ( " +
             ColumnsPost._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            ColumnsPost.USER_ID + " INTEGER, " +
             ColumnsPost.VILLAGE_ID + " INTEGER, " +
+            ColumnsPost.USER_NAME + " TEXT, " +
             ColumnsPost.BODY + " TEXT, " +
-            ColumnsPost.DATA_MODIFIED + " INTEGER NOT NULL);";
+            ColumnsPost.DATA_MODIFIED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);";
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_VILLAGE);
         db.execSQL(CREATE_TABLE_USERS);
-//        db.execSQL(CREATE_TABLE_POST);
+        db.execSQL(CREATE_TABLE_POST);
     }
 
     @Override
