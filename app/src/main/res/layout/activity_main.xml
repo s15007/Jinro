@@ -27,24 +27,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btn_find_village"
-        android:layout_alignBaseline="@+id/btn_game_window"
-        android:layout_alignBottom="@+id/btn_game_window"
-        android:layout_alignEnd="@+id/imageView" />
+        android:layout_alignBaseline="@+id/btn_make_village"
+        android:layout_alignBottom="@+id/btn_make_village"
+        android:layout_alignEnd="@+id/imageView"
+        android:layout_marginEnd="50dp" />
 
     <Button
         android:text="村を作る"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/btn_find_village"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/btn_make_village" />
-
-    <Button
-        android:text="ゲーム画面"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/btn_game_window"
+        android:id="@+id/btn_make_village"
+        android:layout_marginTop="70dp"
         android:layout_below="@+id/imageView"
-        android:layout_alignStart="@+id/imageView"
-        android:layout_marginTop="43dp" />
+        android:layout_toStartOf="@+id/btn_find_village"
+        android:layout_marginEnd="24dp" />
 </RelativeLayout>

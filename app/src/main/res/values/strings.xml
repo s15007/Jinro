@@ -3,7 +3,7 @@
     <string name="find_village">村を探す</string>
     <string name="make_village">村を作る</string>
     <string name="go_into_village">村に入る</string>
-    <string name="player_name">プレイヤー名</string>
+    <string name="player_name_data">プレイヤー名</string>
     <string name="player_job">[役職]</string>
     <string name="wolf_button">人狼</string>
     <string name="sec">秒</string>

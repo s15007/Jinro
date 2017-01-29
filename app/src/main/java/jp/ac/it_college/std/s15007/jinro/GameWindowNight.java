@@ -1,6 +1,7 @@
 package jp.ac.it_college.std.s15007.jinro;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.widget.TabHost;
@@ -11,8 +12,11 @@ import android.widget.TextView;
  */
 
 public class GameWindowNight extends Activity {
+
     private Handler mHandler = new Handler();
     private Runnable updateText;
+
+    private int village_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,5 +56,9 @@ public class GameWindowNight extends Activity {
             }
         };
         mHandler.postDelayed(updateText, 1000);
+
+        Intent intent = getIntent();
+        village_id = intent.getIntExtra("village_id", 0);
+
     }
 }

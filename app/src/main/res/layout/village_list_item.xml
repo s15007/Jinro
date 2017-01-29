@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:textSize="20sp"
             android:paddingTop="12dp"
-            android:text="village"
+            android:text="playerName"
             android:textColor="@color/white"/>
 
         <TextView
