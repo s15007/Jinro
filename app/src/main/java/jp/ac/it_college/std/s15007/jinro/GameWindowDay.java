@@ -10,13 +10,19 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -39,7 +45,9 @@ public class GameWindowDay extends Activity {
     TabWidget tabWidget;
     MediaPlayer mp = null;
 
-
+    private ListView mainlayout;
+    private InputMethodManager inputMethodManager;
+    private View window;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,15 +98,26 @@ public class GameWindowDay extends Activity {
                     comment.getEditableText().clear();
                     insertComment(data);
                     show_comment(village_id);
-
                 }
             }
         });
 
-        setTimer();
+        mainlayout = (ListView) findViewById(R.id.chat_list);
+        inputMethodManager = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        window = findViewById(R.id.chat_list);
+        window.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                inputMethodManager.hideSoftInputFromWindow(mainlayout.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                mainlayout.requestFocus();
+                return false;
+            }
+        });
+
         show_comment(village_id);
         show_users(village_id);
-        getFlick();
+        setTimer();
     }
 
     public class PostComment {
@@ -202,26 +221,6 @@ public class GameWindowDay extends Activity {
             }
         };
         mHandler.postDelayed(updateText, 1000);
-    }
-
-    private void getFlick() {
-        View flickView = getWindow().getDecorView(); // Activity画面
-        float adjustX = 150.0f;
-        float adjustY = 150.0f;
-
-        new FlickCheck(flickView, adjustX, adjustY) {
-            @Override
-            public void getFlick(int swipe) {
-                switch (swipe) {
-                    case FLICK_RIGHT:
-                        tabHost.setCurrentTab(0);
-                        break;
-                    case FLICK_LEFT:
-                        tabHost.setCurrentTab(1);
-                        break;
-                }
-            }
-        };
     }
 
     private void insertComment(PostComment data) {

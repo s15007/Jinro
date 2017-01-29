@@ -3,6 +3,8 @@ package jp.ac.it_college.std.s15007.jinro;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 
 /**
  * Created by samuel on 17/01/26.
@@ -21,7 +23,7 @@ public abstract class FlickCheck {
     private float nowTouchX;
     private float nowTouchY;
 
-    public FlickCheck(View flickView,float adjustX, float adjustY) {
+    public FlickCheck(View flickView, float adjustX, float adjustY) {
         this.adjustX = adjustX;
         this.adjustY = adjustY;
 
