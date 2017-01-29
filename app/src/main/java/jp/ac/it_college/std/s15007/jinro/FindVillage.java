@@ -152,6 +152,9 @@ public class FindVillage extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int pos, long id) {
 
+                mp = MediaPlayer.create(FindVillage.this, R.raw.b_069);
+                mp.start();
+
                 v_name_data = village_name_list.get(pos);
                 v_author_data = player_name_list.get(pos);
                 village_id = village_id_list.get(pos);

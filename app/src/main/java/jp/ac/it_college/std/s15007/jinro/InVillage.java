@@ -1,9 +1,11 @@
 package jp.ac.it_college.std.s15007.jinro;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.view.View;
@@ -25,6 +27,7 @@ public class InVillage extends Activity{
     private String village_name;
     private int village_id;
     private int player_id;
+    MediaPlayer mp = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,13 @@ public class InVillage extends Activity{
 
         AlertDialog.Builder alertDlg = new AlertDialog.Builder(InVillage.this);
         alertDlg.setMessage("あなたの名前は " + player_name + " です");
-        alertDlg.setPositiveButton("OK", null);
+        alertDlg.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mp = MediaPlayer.create(InVillage.this, R.raw.b_069);
+                mp.start();
+            }
+        });
 
         alertDlg.create().show();
 
@@ -57,6 +66,8 @@ public class InVillage extends Activity{
         btn_start_game.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mp = MediaPlayer.create(InVillage.this, R.raw.b_069);
+                mp.start();
                 startGame();
             }
         });
