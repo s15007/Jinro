@@ -1,6 +1,5 @@
 package jp.ac.it_college.std.s15007.jinro;
 
-import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -10,19 +9,17 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.util.Log;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TabWidget;
 import android.widget.TextView;
@@ -34,7 +31,7 @@ import java.util.ArrayList;
  * Created by samuel on 17/01/18.
  */
 
-public class GameWindowDay extends Activity {
+public class GameWindowDay extends AppCompatActivity implements ViewPager.OnPageChangeListener {
 
     private Handler mHandler = new Handler();
     private PostComment data;
@@ -118,6 +115,22 @@ public class GameWindowDay extends Activity {
         show_comment(village_id);
         show_users(village_id);
         setTimer();
+
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
     }
 
     public class PostComment {
