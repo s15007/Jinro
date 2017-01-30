@@ -1,5 +1,6 @@
 package jp.ac.it_college.std.s15007.jinro;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +10,6 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,7 +30,7 @@ import java.util.ArrayList;
  * Created by samuel on 17/01/18.
  */
 
-public class GameWindowDay extends AppCompatActivity implements ViewPager.OnPageChangeListener {
+public class GameWindowDay extends Activity {
 
     private Handler mHandler = new Handler();
     private PostComment data;
@@ -115,21 +114,6 @@ public class GameWindowDay extends AppCompatActivity implements ViewPager.OnPage
         show_comment(village_id);
         show_users(village_id);
         setTimer();
-
-    }
-
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-    }
-
-    @Override
-    public void onPageSelected(int position) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
 
     }
 
