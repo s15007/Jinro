@@ -228,7 +228,6 @@ public class FindVillage extends Activity {
 
         user.village_id = village_id;
         user.name = setName();
-        user.job = "村人";
 
         if (user.name == null) {
             Toast.makeText(FindVillage.this, "メンバーがいっぱいです", Toast.LENGTH_SHORT).show();
@@ -237,7 +236,6 @@ public class FindVillage extends Activity {
 
             values.put(JinroDBHelper.ColumnsUsers.VILLAGE_ID, user.village_id);
             values.put(JinroDBHelper.ColumnsUsers.NAME, user.name);
-            values.put(JinroDBHelper.ColumnsUsers.JOB, user.job);
 
             long id = db.insert(JinroDBHelper.TABLE_NAME_USERS, null, values);
 
@@ -246,7 +244,6 @@ public class FindVillage extends Activity {
             intent.putExtra("village_name", v_name_data);
             intent.putExtra("author_name", v_author_data);
             intent.putExtra("player_name", user.name);
-            intent.putExtra("player_job", user.job);
 
             if (id < 0) {
                 Toast.makeText(FindVillage.this, "登録に失敗しました", Toast.LENGTH_LONG).show();
@@ -272,7 +269,7 @@ public class FindVillage extends Activity {
         ArrayList<String> RandomName = new ArrayList<>();
         RandomName.add("太郎");RandomName.add("ヤマハ");RandomName.add("バカ");
         RandomName.add("山田");RandomName.add("川崎");RandomName.add("あさはら");
-        RandomName.add("ヤス");RandomName.add("れんほう");RandomName.add("メリオダス");
+        RandomName.add("ヤス");RandomName.add("れんほう");RandomName.add("ダ-ス");
         RandomName.add("ホンダ");RandomName.add("のぶ");RandomName.add("たくぞう");
         Collections.shuffle(RandomName);
         while (!checkName(RandomName.get(i))) {
@@ -299,10 +296,7 @@ public class FindVillage extends Activity {
         while (cursor.moveToNext()) {
             name_list.add(cursor.getString(Index));
         }
-        if (name_list.indexOf(randName) != -1) return false;
-
-        return true;
-
+        return name_list.indexOf(randName) == -1;
     }
 
 }

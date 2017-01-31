@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by samuel on 17/01/26.
@@ -26,7 +27,7 @@ public class InVillage extends Activity{
     private String player_job;
     private String village_name;
     private int village_id;
-    private int player_id;
+    private ArrayList<String> name_list;
     MediaPlayer mp = null;
 
     @Override
@@ -86,7 +87,6 @@ public class InVillage extends Activity{
                 null, null, null);
 
         int Index = cursor.getColumnIndex("name");
-        ArrayList<String> name_list = new ArrayList<>();
 
         while (cursor.moveToNext()) {
             name_list.add(cursor.getString(Index));
@@ -98,6 +98,23 @@ public class InVillage extends Activity{
 
     }
 
+    private void setJob(ArrayList<String> name_list) {
+        JinroDBHelper dbHelper = new JinroDBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        int num = name_list.size();
+        int wolfs = num / 3;
+        int knight = 1;
+        int fortune_teller = 1;
+        Collections.shuffle(name_list);
+        for (int i = 0; i < wolfs; i++) {
+            db.execSQL("insert into users(job) values('人狼') where name = " +
+            name_list.get(i) + ";");
+        }
+//        db.execSQL("insert into users(job) values('人狼') where name = " + name_list.get(i) + ";");
+
+    }
+
     private void startGame() {
         Intent intent = new Intent(this, GameWindowDay.class);
 
@@ -105,7 +122,7 @@ public class InVillage extends Activity{
         intent.putExtra("village_name", village_name);
         intent.putExtra("player_name", player_name);
         intent.putExtra("player_job", player_job);
-        intent.putExtra("player_id", player_id);
+        setJob(name_list);
 
         startActivity(intent);
     }
