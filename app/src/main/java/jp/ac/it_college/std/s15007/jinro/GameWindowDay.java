@@ -36,6 +36,7 @@ public class GameWindowDay extends Activity {
     private PostComment data;
     private Runnable updateText;
     private String player_name;
+    private String time;
     private int village_id;
     TabHost tabHost;
     TabWidget tabWidget;
@@ -53,14 +54,22 @@ public class GameWindowDay extends Activity {
         Intent intent = getIntent();
 
         player_name = intent.getStringExtra("player_name");
-        String player_job = intent.getStringExtra("player_job");
-        String village_name = intent.getStringExtra("village_name");
+        time = intent.getStringExtra("time");
         village_id = intent.getIntExtra("village_id", 0);
 
         TextView player = (TextView) findViewById(R.id.pname);
         TextView job = (TextView) findViewById(R.id.pjob);
+        TextView setTime = (TextView) findViewById(R.id.time);
+        TextView DayOrNight = (TextView) findViewById(R.id.DayOrNight);
+        if (time.equals("night")) {
+            DayOrNight.setText("夜");
+            setTime.setText("180");
+        } else {
+            DayOrNight.setText("昼");
+            setTime.setText("300");
+        }
         player.setText(player_name);
-        job.setText(" [" + player_job + "]");
+        job.setText(" [" + getJob(player_name) + "]");
 
         tabWidget = (TabWidget) findViewById(android.R.id.tabs);
         tabHost = (TabHost) findViewById(R.id.tabhost);
@@ -77,7 +86,6 @@ public class GameWindowDay extends Activity {
         tabHost.addTab(tab2);
 
         tabHost.setCurrentTab(0);
-
 
         data = new PostComment();
 
@@ -177,6 +185,23 @@ public class GameWindowDay extends Activity {
         }
     }
 
+    private String getJob(String name) {
+        JinroDBHelper myDb = new JinroDBHelper(this);
+        SQLiteDatabase db = myDb.getReadableDatabase();
+        String job = "";
+
+        Cursor cursor = db.query("users", new String[]{"job"},
+                "name = ?", new String[]{"" + name},
+                null, null, null);
+        int IndexJob = cursor.getColumnIndex("job");
+
+        while (cursor.moveToNext()) {
+            job = cursor.getString(IndexJob);
+        }
+
+        return job;
+    }
+
     private void show_users(int v_id) {
 
         JinroDBHelper myDb = new JinroDBHelper(this);
@@ -184,15 +209,15 @@ public class GameWindowDay extends Activity {
 
         ListView myListView = (ListView) findViewById(R.id.list_players);
 
-        Cursor cursor = db.query("users", new String[]{"name"},
+        Cursor cursor = db.query("users", new String[]{"name", "job"},
                 "village_id = ?", new String[]{"" + v_id},
                 null, null, null);
 
-        int Index = cursor.getColumnIndex("name");
+        int IndexName = cursor.getColumnIndex("name");
         ArrayList<String> name_list = new ArrayList<>();
 
         while (cursor.moveToNext()) {
-            name_list.add(cursor.getString(Index));
+            name_list.add(cursor.getString(IndexName));
         }
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
@@ -205,6 +230,17 @@ public class GameWindowDay extends Activity {
         updateText = new Runnable() {
             @Override
             public void run() {
+                Intent intent = new Intent();
+                if (time.equals("night")) {
+                    intent = new Intent(GameWindowDay.this, GameWindowDay.class);
+                    intent.putExtra("time", "afternoon");
+                    intent.putExtra("village_id", village_id);
+                    intent.putExtra("player_name", player_name);
+                } else {
+                    intent = new Intent(GameWindowDay.this, GameWindowExecution.class);
+                    intent.putExtra("village_id", village_id);
+                    intent.putExtra("player_name", player_name);
+                }
                 TextView setTime = (TextView) findViewById(R.id.time);
                 Integer count = Integer.valueOf(setTime.getText().toString());
                 count -= 1;
@@ -213,7 +249,7 @@ public class GameWindowDay extends Activity {
                 if (count > 0) {
                     mHandler.postDelayed(updateText, 1000);
                 } else {
-                    finish();
+                    startActivity(intent);
                 }
             }
         };

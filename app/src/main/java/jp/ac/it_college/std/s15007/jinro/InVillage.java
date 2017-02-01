@@ -13,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,10 +25,8 @@ import java.util.Collections;
 public class InVillage extends Activity{
 
     private String player_name;
-    private String player_job;
     private String village_name;
     private int village_id;
-    private ArrayList<String> name_list;
     MediaPlayer mp = null;
 
     @Override
@@ -39,7 +38,6 @@ public class InVillage extends Activity{
 
         String author_name = intent.getStringExtra("author_name");
         player_name = intent.getStringExtra("player_name");
-        player_job = intent.getStringExtra("player_job");
         village_name = intent.getStringExtra("village_name");
         village_id = intent.getIntExtra("village_id", 0);
 
@@ -81,6 +79,7 @@ public class InVillage extends Activity{
         SQLiteDatabase db = myDb.getReadableDatabase();
 
         ListView myListView = (ListView) findViewById(R.id.player_in_list);
+        ArrayList<String> name_list = new ArrayList<>();
 
         Cursor cursor = db.query("users", new String[]{"name"},
                 "village_id = ?", new String[]{"" + v_id},
@@ -98,32 +97,65 @@ public class InVillage extends Activity{
 
     }
 
-    private void setJob(ArrayList<String> name_list) {
-        JinroDBHelper dbHelper = new JinroDBHelper(this);
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        int num = name_list.size();
-        int wolfs = num / 3;
-        int knight = 1;
-        int fortune_teller = 1;
-        Collections.shuffle(name_list);
-        for (int i = 0; i < wolfs; i++) {
-            db.execSQL("insert into users(job) values('人狼') where name = " +
-            name_list.get(i) + ";");
-        }
-//        db.execSQL("insert into users(job) values('人狼') where name = " + name_list.get(i) + ";");
-
-    }
-
     private void startGame() {
         Intent intent = new Intent(this, GameWindowDay.class);
-
         intent.putExtra("village_id", village_id);
         intent.putExtra("village_name", village_name);
         intent.putExtra("player_name", player_name);
-        intent.putExtra("player_job", player_job);
-        setJob(name_list);
+        intent.putExtra("time", "night");
 
-        startActivity(intent);
+        JinroDBHelper dbHelper = new JinroDBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        ArrayList<String> players = new ArrayList<>();
+
+        Cursor cursor = db.query("users", new String[]{"name"},
+                "village_id = ?", new String[]{"" + village_id},
+                null, null, null);
+
+        int Index = cursor.getColumnIndex("name");
+
+        while (cursor.moveToNext()) {
+            players.add(cursor.getString(Index));
+        }
+
+        int num = players.size();
+        int wolfs = num / 3;
+        int village_people;
+
+        if (num < 4) {
+            village_people = 1;
+        } else {
+            village_people = num - wolfs - 2;
+        }
+
+        Collections.shuffle(players);
+
+        if (wolfs == 0) {
+            Toast.makeText(this, "人数が少なすぎます", Toast.LENGTH_SHORT).show();
+        } else {
+            for (int i = 0; i <= wolfs; i++) {
+                db.execSQL("UPDATE users SET job = '人狼' WHERE name = '" +
+                        players.get(i) + "';");
+                if (i == wolfs) {
+                    for (int n = 0; n < village_people; n++) {
+                        db.execSQL("UPDATE users SET job = '村人' WHERE name = '" +
+                                players.get(i) + "';");
+                        i++;
+                    }
+                    if (num == 3) {
+                        db.execSQL("UPDATE users SET job = '占い師' WHERE name = '" +
+                                players.get(i) + "';");
+                    } else {
+                        db.execSQL("UPDATE users SET job = '占い師' WHERE name = '" +
+                                players.get(i) + "';");
+                        i++;
+                        db.execSQL("UPDATE users SET job = '騎士' WHERE name = '" +
+                                players.get(i) + "';");
+                    }
+                }
+            }
+            startActivity(intent);
+        }
     }
 }

@@ -138,29 +138,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textView10"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textColor="@color/black"
-        android:layout_alignTop="@+id/txt1"
         android:layout_toStartOf="@+id/button"
-        android:layout_marginEnd="11dp" />
+        android:layout_marginEnd="11dp"
+        android:layout_alignBottom="@+id/time"
+        android:layout_alignTop="@+id/time" />
 
     <TextView
         android:text="@string/sec_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/time"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textColor="@color/red"
         android:layout_marginEnd="11dp"
-        android:layout_alignBaseline="@+id/textView10"
-        android:layout_alignBottom="@+id/textView10"
-        android:layout_toStartOf="@+id/textView10" />
+        android:layout_toStartOf="@+id/textView10"
+        android:layout_alignBottom="@+id/DayOrNight" />
 
     <TextView
         android:text="@string/day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/txt1"
+        android:id="@+id/DayOrNight"
         android:textSize="28sp"
         android:textColor="@color/colorPrimary"
         android:layout_alignTop="@+id/pjob"

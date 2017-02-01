@@ -34,6 +34,7 @@ public class JinroDBHelper extends SQLiteOpenHelper {
         public static final String NAME = "name";
         public static final String VILLAGE_ID = "village_id";
         public static final String JOB = "job";
+        public static final String VOTES = "votes";
         public static final String DATA_MODIFIED = "date_modified";
     }
 
@@ -58,6 +59,7 @@ public class JinroDBHelper extends SQLiteOpenHelper {
             ColumnsUsers.VILLAGE_ID + " INTEGER, " +
             ColumnsUsers.NAME + " TEXT, " +
             ColumnsUsers.JOB + " TEXT, " +
+            ColumnsUsers.VOTES + " INTEGER, " +
             ColumnsUsers.DATA_MODIFIED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL);";
 
     private static final String CREATE_TABLE_POST = "CREATE TABLE " +

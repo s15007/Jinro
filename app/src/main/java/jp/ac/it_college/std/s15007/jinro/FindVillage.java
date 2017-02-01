@@ -181,7 +181,6 @@ public class FindVillage extends Activity {
                 alertDlg.create().show();
             }
         });
-
         db.close();
     }
 
