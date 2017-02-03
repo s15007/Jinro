@@ -98,7 +98,7 @@ public class InVillage extends Activity{
     }
 
     private void startGame() {
-        Intent intent = new Intent(this, GameWindowDay.class);
+        Intent intent = new Intent(this, GameWindow.class);
         intent.putExtra("village_id", village_id);
         intent.putExtra("village_name", village_name);
         intent.putExtra("player_name", player_name);

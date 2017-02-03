@@ -50,7 +50,7 @@ public class GameWindowExecution extends Activity {
         updateText = new Runnable() {
             @Override
             public void run() {
-                Intent intent = new Intent(GameWindowExecution.this, GameWindowDay.class);
+                Intent intent = new Intent(GameWindowExecution.this, GameWindow.class);
                 intent.putExtra("time", "night");
                 intent.putExtra("village_id", village_id);
                 intent.putExtra("player_name", player_name);

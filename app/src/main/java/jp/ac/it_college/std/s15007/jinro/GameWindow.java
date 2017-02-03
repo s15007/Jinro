@@ -3,6 +3,7 @@ package jp.ac.it_college.std.s15007.jinro;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -10,11 +11,13 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,14 +33,16 @@ import java.util.ArrayList;
  * Created by samuel on 17/01/18.
  */
 
-public class GameWindowDay extends Activity {
+public class GameWindow extends Activity {
 
     private Handler mHandler = new Handler();
     private PostComment data;
     private Runnable updateText;
     private String player_name;
     private String time;
+    private String fortuned_character;
     private int village_id;
+    private boolean clickable = false;
     TabHost tabHost;
     TabWidget tabWidget;
     MediaPlayer mp = null;
@@ -49,7 +54,7 @@ public class GameWindowDay extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.game_window_day);
+        setContentView(R.layout.game_window);
 
         Intent intent = getIntent();
 
@@ -61,15 +66,6 @@ public class GameWindowDay extends Activity {
         TextView job = (TextView) findViewById(R.id.pjob);
         TextView setTime = (TextView) findViewById(R.id.time);
         TextView DayOrNight = (TextView) findViewById(R.id.DayOrNight);
-        if (time.equals("night")) {
-            DayOrNight.setText("夜");
-            setTime.setText("180");
-        } else {
-            DayOrNight.setText("昼");
-            setTime.setText("300");
-        }
-        player.setText(player_name);
-        job.setText(" [" + getJob(player_name) + "]");
 
         tabWidget = (TabWidget) findViewById(android.R.id.tabs);
         tabHost = (TabHost) findViewById(R.id.tabhost);
@@ -87,13 +83,64 @@ public class GameWindowDay extends Activity {
 
         tabHost.setCurrentTab(0);
 
+        if (time.equals("night")) {
+            DayOrNight.setText("夜");
+            setTime.setText("180");
+        } else {
+            DayOrNight.setText("昼");
+            setTime.setText("300");
+            String fortuned = intent.getStringExtra("fortuned_character");
+        }
+        player.setText(player_name);
+        job.setText(" [" + getJob(player_name) + "]");
+
+        if (getJob(player_name).equals("人狼") && time.equals("night")) {
+            AlertDialog.Builder alertDlg = new AlertDialog.Builder(GameWindow.this);
+            alertDlg.setMessage("誰を殺すか選んでください");
+            alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    mp = MediaPlayer.create(GameWindow.this, R.raw.b_069);
+                    mp.setVolume(0.8f, 0.8f);
+                    mp.start();
+                }
+            });
+            alertDlg.create().show();
+            tabHost.setCurrentTab(1);
+            clickable = true;
+        } else if (getJob(player_name).equals("占い師") && time.equals("night")) {
+            AlertDialog.Builder alertDlg = new AlertDialog.Builder(GameWindow.this);
+            alertDlg.setMessage("誰を占うか選んでください");
+            alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    mp = MediaPlayer.create(GameWindow.this, R.raw.b_069);
+                    mp.setVolume(0.8f, 0.8f);
+                    mp.start();
+                }
+            });
+            alertDlg.create().show();
+            tabHost.setCurrentTab(1);
+            clickable = true;
+        } else if (getJob(player_name).equals("騎士") && time.equals("night")) {
+            AlertDialog.Builder alertDlg = new AlertDialog.Builder(GameWindow.this);
+            alertDlg.setMessage("誰を守るか選んでください");
+            alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    mp = MediaPlayer.create(GameWindow.this, R.raw.b_069);
+                    mp.setVolume(0.8f, 0.8f);
+                    mp.start();
+                }
+            });
+            alertDlg.create().show();
+            tabHost.setCurrentTab(1);
+            clickable = true;
+        }
+
         data = new PostComment();
 
         Button btn_comment = (Button) findViewById(R.id.btn_comment);
         btn_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 EditText comment = (EditText) findViewById(R.id.edit_comment);
                 data.player_name = player_name;
                 data.comment = comment.getText().toString();
@@ -118,11 +165,9 @@ public class GameWindowDay extends Activity {
                 return false;
             }
         });
-
         show_comment(village_id);
         show_users(village_id);
         setTimer();
-
     }
 
     public class PostComment {
@@ -198,6 +243,7 @@ public class GameWindowDay extends Activity {
         while (cursor.moveToNext()) {
             job = cursor.getString(IndexJob);
         }
+        db.close();
 
         return job;
     }
@@ -207,14 +253,14 @@ public class GameWindowDay extends Activity {
         JinroDBHelper myDb = new JinroDBHelper(this);
         SQLiteDatabase db = myDb.getReadableDatabase();
 
-        ListView myListView = (ListView) findViewById(R.id.list_players);
+        final ListView myListView = (ListView) findViewById(R.id.list_players);
 
         Cursor cursor = db.query("users", new String[]{"name", "job"},
                 "village_id = ?", new String[]{"" + v_id},
                 null, null, null);
 
         int IndexName = cursor.getColumnIndex("name");
-        ArrayList<String> name_list = new ArrayList<>();
+        final ArrayList<String> name_list = new ArrayList<>();
 
         while (cursor.moveToNext()) {
             name_list.add(cursor.getString(IndexName));
@@ -223,7 +269,71 @@ public class GameWindowDay extends Activity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
                 R.layout.game_members_row, name_list);
         myListView.setAdapter(adapter);
+        if (clickable) {
+            myListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                    AlertDialog.Builder alertDlg = new AlertDialog.Builder(GameWindow.this);
+                    alertDlg.setMessage(name_list.get(position) + " でよろしいですか？");
+                    alertDlg.setNegativeButton("キャンセル", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            mp = MediaPlayer.create(GameWindow.this, R.raw.b_069);
+                            mp.setVolume(0.8f, 0.8f);
+                            mp.start();
+                        }
+                    });
+                    alertDlg.setPositiveButton("はい", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            mp = MediaPlayer.create(GameWindow.this, R.raw.b_069);
+                            mp.setVolume(0.8f, 0.8f);
+                            mp.start();
+                            switch (getJob(player_name)) {
+                                case "人狼":
+                                    kill(name_list.get(position));
+                                    break;
+                                case "占い師":
+                                    setFortuned_character(name_list.get(position));
+                                    break;
+                                case "騎士":
+                                    protect(name_list.get(position));
+                                    break;
+                            }
+                        }
+                    });
+                    alertDlg.create().show();
+                }
+            });
+        }
+        db.close();
+    }
 
+    public String getFortuned_character() {
+        return fortuned_character;
+    }
+
+    public void setFortuned_character(String fortuned_character) {
+        this.fortuned_character = fortuned_character;
+    }
+
+    private void protect(String s) {
+        JinroDBHelper myDb = new JinroDBHelper(this);
+        SQLiteDatabase db = myDb.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(JinroDBHelper.ColumnsUsers.STATUS, "protected");
+        db.update(JinroDBHelper.TABLE_NAME_USERS, values, "name = '"+s+"'", null);
+        db.close();
+    }
+
+    private void kill(String s) {
+        JinroDBHelper myDb = new JinroDBHelper(this);
+        SQLiteDatabase db = myDb.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(JinroDBHelper.ColumnsUsers.VOTES, 1);
+        db.update(JinroDBHelper.TABLE_NAME_USERS, values, "name = '"+s+"'", null);
+        db.close();
     }
 
     private void setTimer() {
@@ -232,12 +342,12 @@ public class GameWindowDay extends Activity {
             public void run() {
                 Intent intent = new Intent();
                 if (time.equals("night")) {
-                    intent = new Intent(GameWindowDay.this, GameWindowDay.class);
+                    intent = new Intent(GameWindow.this, GameWindow.class);
                     intent.putExtra("time", "afternoon");
                     intent.putExtra("village_id", village_id);
                     intent.putExtra("player_name", player_name);
                 } else {
-                    intent = new Intent(GameWindowDay.this, GameWindowExecution.class);
+                    intent = new Intent(GameWindow.this, GameWindowExecution.class);
                     intent.putExtra("village_id", village_id);
                     intent.putExtra("player_name", player_name);
                 }
@@ -249,6 +359,9 @@ public class GameWindowDay extends Activity {
                 if (count > 0) {
                     mHandler.postDelayed(updateText, 1000);
                 } else {
+                    if (getJob(player_name).equals("占い師")) {
+                        intent.putExtra("fortuned_character", getFortuned_character());
+                    }
                     startActivity(intent);
                 }
             }
@@ -268,8 +381,9 @@ public class GameWindowDay extends Activity {
         long id = db.insert(JinroDBHelper.TABLE_NAME_POST, null, values);
 
         if (id == -1) {
-            Toast.makeText(GameWindowDay.this, "送信できませんでした", Toast.LENGTH_LONG).show();
+            Toast.makeText(GameWindow.this, "送信できませんでした", Toast.LENGTH_LONG).show();
         }
+        db.close();
 
     }
 
@@ -292,7 +406,6 @@ public class GameWindowDay extends Activity {
 
         ListView myListView = (ListView) findViewById(R.id.chat_list);
 
-
         while (isEof) {
             String v_name_data = cursor.getString(0);
             String p_name_data = cursor.getString(1);
@@ -301,7 +414,6 @@ public class GameWindowDay extends Activity {
             player_name_list.add(p_name_data);
 
             Comments comments = new Comments();
-
 
             comments.setPlayerName(v_name_data);
             comments.setPlayerComment(p_name_data);
@@ -317,5 +429,4 @@ public class GameWindowDay extends Activity {
 
         db.close();
     }
-
 }

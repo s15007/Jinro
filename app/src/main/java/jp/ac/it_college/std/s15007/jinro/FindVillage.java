@@ -40,7 +40,6 @@ public class FindVillage extends Activity {
     private JinroDBHelper myDb;
     MediaPlayer mp = null;
     User user;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,14 +100,127 @@ public class FindVillage extends Activity {
         }
     }
 
+    public class VillageAdapter extends ArrayAdapter<Village> {
+
+        private LayoutInflater layoutInflater;
+
+        public VillageAdapter(Context c, int id, ArrayList<Village> villages) {
+            super(c, id, villages);
+            this.layoutInflater = (LayoutInflater) c.getSystemService(
+                    Context.LAYOUT_INFLATER_SERVICE
+            );
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            if (convertView == null) {
+                convertView = layoutInflater.inflate(
+                        R.layout.village_list_item,
+                        parent,
+                        false
+                );
+            }
+
+            Village village = (Village) getItem(position);
+
+            ((ImageView) convertView.findViewById(R.id.icon))
+                    .setImageBitmap(village.getIcon());
+            ((TextView) convertView.findViewById(R.id.vNameColumn))
+                    .setText(village.getVillage());
+            ((TextView) convertView.findViewById(R.id.pNameColumn))
+                    .setText(village.getPlayer());
+
+            return convertView;
+        }
+    }
+
+    public class User {
+        private String name;
+        private int village_id;
+    }
+
+    private String setName() {
+
+        int i = 0;
+
+        ArrayList<String> RandomName = new ArrayList<>();
+        RandomName.add("太郎");RandomName.add("ヤマハ");RandomName.add("バカ");
+        RandomName.add("山田");RandomName.add("川崎");RandomName.add("あさはら");
+        RandomName.add("ヤス");RandomName.add("れんほう");RandomName.add("ダ-ス");
+        RandomName.add("ホンダ");RandomName.add("のぶ");RandomName.add("たくぞう");
+        Collections.shuffle(RandomName);
+        while (!checkName(RandomName.get(i))) {
+            if (i >= RandomName.size() - 1){
+                return null;
+            } else {
+                i++;
+            }
+        }
+        return RandomName.get(i);
+    }
+
+    private void StartActivity() {
+        JinroDBHelper myDb = new JinroDBHelper(this);
+        SQLiteDatabase db = myDb.getWritableDatabase();
+
+        User user = new User();
+
+        user.village_id = village_id;
+        user.name = setName();
+
+        if (user.name == null) {
+            Toast.makeText(FindVillage.this, "メンバーがいっぱいです", Toast.LENGTH_SHORT).show();
+        } else {
+            ContentValues values = new ContentValues();
+
+            values.put(JinroDBHelper.ColumnsUsers.VILLAGE_ID, user.village_id);
+            values.put(JinroDBHelper.ColumnsUsers.NAME, user.name);
+
+            long id = db.insert(JinroDBHelper.TABLE_NAME_USERS, null, values);
+
+            Intent intent = new Intent(this, InVillage.class);
+            intent.putExtra("village_id", village_id);
+            intent.putExtra("village_name", v_name_data);
+            intent.putExtra("author_name", v_author_data);
+            intent.putExtra("player_name", user.name);
+
+            if (id < 0) {
+                Toast.makeText(FindVillage.this, "登録に失敗しました", Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(FindVillage.this, "登録しました", Toast.LENGTH_LONG).show();
+                startActivity(intent);
+            }
+            db.close();
+        }
+
+    }
+
+    private boolean checkName(String randName) {
+        JinroDBHelper myDb = new JinroDBHelper(this);
+        SQLiteDatabase db = myDb.getReadableDatabase();
+
+        Cursor cursor = db.query("users", new String[]{"name"},
+                "village_id = ?", new String[]{"" + village_id},
+                null, null, null);
+
+        int Index = cursor.getColumnIndex("name");
+        ArrayList<String> name_list = new ArrayList<>();
+
+        while (cursor.moveToNext()) {
+            name_list.add(cursor.getString(Index));
+        }
+        return name_list.indexOf(randName) == -1;
+    }
+
     private void show_village() {
         JinroDBHelper myDb = new JinroDBHelper(this);
         SQLiteDatabase db = myDb.getReadableDatabase();
 
         Cursor cursor = db.query(JinroDBHelper.TABLE_NAME_VILLAGE, new String[] {
-                JinroDBHelper.ColumnsVillage._ID,
-                JinroDBHelper.ColumnsVillage.VILLAGE_NAME,
-                JinroDBHelper.ColumnsVillage.PLAYER_NAME },
+                        JinroDBHelper.ColumnsVillage._ID,
+                        JinroDBHelper.ColumnsVillage.VILLAGE_NAME,
+                        JinroDBHelper.ColumnsVillage.PLAYER_NAME },
                 null, null, null, null, null);
 
         boolean isEof = cursor.moveToFirst();
@@ -177,125 +289,10 @@ public class FindVillage extends Activity {
                         StartActivity();
                     }
                 });
-
                 alertDlg.create().show();
             }
         });
         db.close();
-    }
-
-    public class VillageAdapter extends ArrayAdapter<Village> {
-
-        private LayoutInflater layoutInflater;
-
-        public VillageAdapter(Context c, int id, ArrayList<Village> villages) {
-            super(c, id, villages);
-            this.layoutInflater = (LayoutInflater) c.getSystemService(
-                    Context.LAYOUT_INFLATER_SERVICE
-            );
-        }
-
-        @NonNull
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = layoutInflater.inflate(
-                        R.layout.village_list_item,
-                        parent,
-                        false
-                );
-            }
-
-            Village village = (Village) getItem(position);
-
-            ((ImageView) convertView.findViewById(R.id.icon))
-                    .setImageBitmap(village.getIcon());
-            ((TextView) convertView.findViewById(R.id.vNameColumn))
-                    .setText(village.getVillage());
-            ((TextView) convertView.findViewById(R.id.pNameColumn))
-                    .setText(village.getPlayer());
-
-            return convertView;
-        }
-    }
-
-    private void StartActivity() {
-        JinroDBHelper myDb = new JinroDBHelper(this);
-        SQLiteDatabase db = myDb.getWritableDatabase();
-
-        User user = new User();
-
-        user.village_id = village_id;
-        user.name = setName();
-
-        if (user.name == null) {
-            Toast.makeText(FindVillage.this, "メンバーがいっぱいです", Toast.LENGTH_SHORT).show();
-        } else {
-            ContentValues values = new ContentValues();
-
-            values.put(JinroDBHelper.ColumnsUsers.VILLAGE_ID, user.village_id);
-            values.put(JinroDBHelper.ColumnsUsers.NAME, user.name);
-
-            long id = db.insert(JinroDBHelper.TABLE_NAME_USERS, null, values);
-
-            Intent intent = new Intent(this, InVillage.class);
-            intent.putExtra("village_id", village_id);
-            intent.putExtra("village_name", v_name_data);
-            intent.putExtra("author_name", v_author_data);
-            intent.putExtra("player_name", user.name);
-
-            if (id < 0) {
-                Toast.makeText(FindVillage.this, "登録に失敗しました", Toast.LENGTH_LONG).show();
-            } else {
-                Toast.makeText(FindVillage.this, "登録しました", Toast.LENGTH_LONG).show();
-                startActivity(intent);
-            }
-            db.close();
-        }
-
-    }
-
-    public class User {
-        private String name;
-        private String job;
-        private int village_id;
-    }
-
-    private String setName() {
-
-        int i = 0;
-
-        ArrayList<String> RandomName = new ArrayList<>();
-        RandomName.add("太郎");RandomName.add("ヤマハ");RandomName.add("バカ");
-        RandomName.add("山田");RandomName.add("川崎");RandomName.add("あさはら");
-        RandomName.add("ヤス");RandomName.add("れんほう");RandomName.add("ダ-ス");
-        RandomName.add("ホンダ");RandomName.add("のぶ");RandomName.add("たくぞう");
-        Collections.shuffle(RandomName);
-        while (!checkName(RandomName.get(i))) {
-            if (i >= RandomName.size() - 1){
-                return null;
-            } else {
-                i++;
-            }
-        }
-        return RandomName.get(i);
-    }
-
-    private boolean checkName(String randName) {
-        JinroDBHelper myDb = new JinroDBHelper(this);
-        SQLiteDatabase db = myDb.getReadableDatabase();
-
-        Cursor cursor = db.query("users", new String[]{"name"},
-                "village_id = ?", new String[]{"" + village_id},
-                null, null, null);
-
-        int Index = cursor.getColumnIndex("name");
-        ArrayList<String> name_list = new ArrayList<>();
-
-        while (cursor.moveToNext()) {
-            name_list.add(cursor.getString(Index));
-        }
-        return name_list.indexOf(randName) == -1;
     }
 
 }
